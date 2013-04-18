@@ -179,7 +179,7 @@ file job_config2 do
 end
 
 ################## SSH discoverer jobs ##############
-include_recipe "jenkins::update_ssh_sites"
+include_recipe "zzz_jenkins::update_ssh_sites"
 
 log "Restart jenkins again for reloading config" do  
   notifies :restart, "service[jenkins]", :delayed
