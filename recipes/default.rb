@@ -31,8 +31,8 @@ tmp = "/tmp"
 
 # add jenkins user to sudoers
 
-node[:authorization][:sudo][:users] =[]
-node[:authorization][:sudo][:groups =[]
+node.default.authorization.sudo.users =[]
+node.default.authorization.sudo.groups =[]
 node[:authorization][:sudo][:users] << node[:jenkins][:server][:user]
 node[:authorization][:sudo][:groups] << node[:jenkins][:server][:group]
 include_recipe "sudo"
