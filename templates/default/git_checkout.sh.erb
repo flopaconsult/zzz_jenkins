@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -d "<%= node[:jenkins][:server][:home] %>/workspace/magento" ]; then
+  echo "<------- repository magento already exists ... doing git PULL ------->"
+  cd <%= node[:jenkins][:server][:home] %>/workspace/magento/
+  GIT_SSH="<%= node[:jenkins][:server][:home] %>/wrap-ssh4git.sh" git pull -v
+else
+  echo "<------- repository magento does not exists ... doing git CLONE ------->"
+  GIT_SSH="/<%= node[:jenkins][:server][:home] %>/wrap-ssh4git.sh" git clone <%= node[:jenkins][:git][:repo] %> -v
+fi
+
+echo "Overwrite knife config to match your own config"
+cp -r <%= node[:jenkins][:server][:home] %>/.chef <%= node[:jenkins][:server][:home] %>/workspace/magento -f -v
+

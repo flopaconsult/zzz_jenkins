@@ -1,0 +1,1 @@
+# put here a script which only be stored on the remote host (maibe called from other one)

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+knife cookbook bulk delete .* --yes
+cd <%= node[:jenkins][:server][:home] %>/workspace/magento/ && ./init-jenkins-workspace.sh
+knife cookbook upload -a
+cd <%= node[:jenkins][:server][:home] %>/workspace/magento/scripts-vpc && ./jenkins-start-vpc-env.sh

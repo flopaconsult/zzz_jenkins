@@ -1,0 +1,53 @@
+#!/usr/bin/ruby
+
+require 'rubygems'
+require 'fog'
+
+# Set up a connection
+connection = Fog::Compute.new(
+        :provider => "AWS",
+        :aws_access_key_id => '<%= @aws_access_key_id %>',
+        :aws_secret_access_key => '<%= @aws_secret_access_key %>' )
+
+instances_info = ARGV[0]
+action = ARGV[1]
+
+instances_full = instances_info.split(',')
+
+instances_ids = Array.new
+instances_full.each do |instance_full|
+    instance_full = instance_full.strip
+	parts = instance_full.split('|')
+	parts.each do |part|
+	    part = part.strip
+	    item = part.split(':');
+		if(item[0] == "Instance id")
+		    instances_ids << item[1].strip
+		end
+		puts "#{part}"
+	end
+	puts "------------------"
+end
+puts "Instances: #{instances_ids}"
+instances = Array.new
+instances_ids.each do |instance_id|
+    instance = connection.servers.get(instance_id)
+	instances << instance
+end
+
+instances.each do |instance|
+    case action
+        when "Start"
+            puts "Start instance #{instance.id} ..."
+		    instance.start
+        when "Stop" 
+            puts "Stop instances #{instance.id} ..."
+			instance.stop
+	    when "Reboot" 
+            puts "Reboot instances #{instance.id} ..."
+			instance.reboot
+	    when "Terminate" 
+            puts "Terminate instances #{instance.id} ..."
+			instance.destroy
+    end
+end

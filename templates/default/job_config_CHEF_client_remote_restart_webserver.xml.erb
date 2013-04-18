@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description><%= @job_name %></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <quietPeriod>60</quietPeriod>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector"/>
+  <concurrentBuild>true</concurrentBuild>
+  <builders>
+    <% @SSH_SITES_WEB_SERVERS.each do |site| -%>
+    <org.jvnet.hudson.plugins.SSHBuilder plugin="ssh@2.3">
+      <siteName><%= node[:jenkins][:node][:user] %>@<%= site %>:22</siteName>
+      <command>
+        sudo chef-client -j /etc/chef/restart_webserver.json
+	    </command>
+    </org.jvnet.hudson.plugins.SSHBuilder>
+    <% end -%>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>  

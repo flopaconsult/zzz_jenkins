@@ -1,0 +1,30 @@
+#!/usr/bin/ruby
+
+require 'rubygems'
+require 'fog'
+
+# Import EC2 credentials e.g. @aws_access_key_id and @aws_access_key_id
+
+# Set up a connection
+connection = Fog::Compute.new(
+        :provider => "AWS",
+        :aws_access_key_id => '<%= @aws_access_key_id %>',
+        :aws_secret_access_key => '<%= @aws_secret_access_key %>' )
+
+# Get a list of all the running servers/instances
+instance_list = connection.servers.all
+
+instances_data = ""
+instance_list.each do |instance|
+    instances_data +=  "Instance id: #{instance.id} | State: #{instance.state} | Environment: #{instance.tags['Environment']} | Name: #{instance.tags['Name']} | AMI: #{instance.image_id} | VPC: #{instance.vpc_id} | Platform: #{instance.platform} | Availability zone: #{instance.availability_zone} | Internal IP: #{instance.private_ip_address} ,"
+end
+instances_data =  instances_data[0, instances_data.length - 2]
+
+begin
+  file = File.open("<%= node[:jenkins][:server][:scripts_dir] %>/all_instances.properties", "w")
+  file.write("instances=#{instances_data}")
+rescue IOError => e
+  #some error occur, dir not writable etc.
+ensure
+  file.close unless file == nil
+end

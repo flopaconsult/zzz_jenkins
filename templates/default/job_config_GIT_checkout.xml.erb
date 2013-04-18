@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>This job do the followings: clone git repository or pull if exists; delete all cookbooks from chef server; execute init.sh; upload all cookbooks; start magento environment...</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector"/>
+  <concurrentBuild>true</concurrentBuild>
+  <customWorkspace><%= node[:jenkins][:server][:home] %>/workspace</customWorkspace>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>BUILD_ID=dontKillMe <%= node[:jenkins][:server][:scripts_dir] %>/git_checkout.sh
+      </command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

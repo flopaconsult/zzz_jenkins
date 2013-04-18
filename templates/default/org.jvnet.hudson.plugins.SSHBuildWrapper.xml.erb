@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<org.jvnet.hudson.plugins.SSHBuildWrapper_-DescriptorImpl plugin="ssh@2.3">
+  <sites>
+	<% @SSH_SITES.each do |site| -%>
+		<org.jvnet.hudson.plugins.SSHSite>
+		  <hostname><%= site[:fqdn] %></hostname>
+		  <port>22</port>
+		  <username><%= node[:jenkins][:node][:user] %></username>
+		  <password></password>
+		  <keyfile><%= node[:jenkins][:server][:home] %>/.ssh/id_rsa</keyfile>
+		  <pty>false</pty>
+		</org.jvnet.hudson.plugins.SSHSite>
+	<% end -%>
+	</sites>
+</org.jvnet.hudson.plugins.SSHBuildWrapper_-DescriptorImpl>

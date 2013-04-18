@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>This job do the followings: delete all cookbooks from chef server; execute init.sh; upload all cookbooks; start menvironment</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>SERVERS_DB</name>
+          <description></description>
+          <defaultValue>1</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SERVERS_DBSLAVE</name>
+          <description></description>
+          <defaultValue>0</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SERVERS_WEB</name>
+          <description></description>
+          <defaultValue>1</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SERVERS_MONITORING</name>
+          <description></description>
+          <defaultValue>1</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SERVERS_MAINTENANCE_PAGE</name>
+          <description></description>
+          <defaultValue>1</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>ENV</name>
+          <description></description>
+          <defaultValue>dev</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>ENVGRP</name>
+          <description></description>
+          <defaultValue>dev</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>EBS_SIZE</name>
+          <description></description>
+          <defaultValue>8</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>REGION</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <% node[:jenkins][:jobs][:regions].each do |region| -%>
+                <string><%= region %></string>
+              <% end -%>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>ZONE</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <% node[:jenkins][:jobs][:availabilityzones].each do |zone| -%>
+                <string><%= zone %></string>
+              <% end -%>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>SUBNET</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <% node[:jenkins][:jobs][:subnets].each do |subnet| -%>
+                <string><%= subnet %></string>
+              <% end -%>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector"/>
+  <concurrentBuild>false</concurrentBuild>
+  <customWorkspace>/var/chef-workspace/workspace</customWorkspace>
+  <builders>
+    <EnvInjectBuilder plugin="envinject@1.80">
+      <info>
+        <propertiesContent>
+          ENV=${ENV}
+          ENVGRP=${ENVGRP}
+          SUBNET=${SUBNET}
+          EBS_SIZE=${EBS_SIZE}
+		  REGION=${REGION}
+		  ZONE=${ZONE}
+          SERVERS_DB=${SERVERS_DB}
+          SERVERS_DBSLAVE=${SERVERS_DBSLAVE}
+          SERVERS_WEB=${SERVERS_WEB}
+          SERVERS_MONITORING=${SERVERS_MONITORING}
+          SERVERS_MAINTENANCE_PAGE=${SERVERS_MAINTENANCE_PAGE}
+        </propertiesContent>
+      </info>
+    </EnvInjectBuilder>
+    <hudson.tasks.Shell>
+      <command>BUILD_ID=dontKillMe <%= node[:jenkins][:server][:scripts_dir] %>/start_instances.sh
+      </command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
