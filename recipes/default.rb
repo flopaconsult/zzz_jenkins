@@ -33,8 +33,11 @@ tmp = "/tmp"
 
 node.default.authorization.sudo.users =[]
 node.default.authorization.sudo.groups =[]
-node[:authorization][:sudo][:users] << node[:jenkins][:server][:user]
-node[:authorization][:sudo][:groups] << node[:jenkins][:server][:group]
+node.default.authorization.sudo.users << node[:jenkins][:server][:user]
+node.default.authorization.sudo.groups << node[:jenkins][:server][:group]
+#node[:authorization][:sudo][:users] << node[:jenkins][:server][:user]
+#node[:authorization][:sudo][:groups] << node[:jenkins][:server][:group]
+
 include_recipe "sudo"
 
 ruby_block "store jenkins ssh pubkey" do
