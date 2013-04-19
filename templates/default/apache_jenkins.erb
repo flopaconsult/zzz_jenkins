@@ -21,14 +21,14 @@
   # Local reverse proxy authorization override
   # Most unix distribution deny proxy by default
   # (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
-  <Proxy http://<%= node[:ipaddress] %>:<%= node[:jenkins][:server][:port] %>/*>
+  <Proxy http://<%= node[:ec2][:local_ipv4] %>:<%= node[:jenkins][:server][:port] %>/*>
     Order deny,allow
     Allow from all
   </Proxy>
 
   ProxyPreserveHost on
-  ProxyPass         /  http://<%= node[:ipaddress] %>:<%= node[:jenkins][:server][:port] %>/
-  ProxyPassReverse  /  http://<%= node[:ipaddress] %>:<%= node[:jenkins][:server][:port] %>/
+  ProxyPass         /  http://<%= node[:ec2][:local_ipv4] %>:<%= node[:jenkins][:server][:port] %>/
+  ProxyPassReverse  /  http://<%= node[:ec2][:local_ipv4] %>:<%= node[:jenkins][:server][:port] %>/
 
   <Location />
     AuthType basic
