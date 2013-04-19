@@ -38,7 +38,7 @@ node.default.authorization.sudo.groups << node[:jenkins][:server][:group]
 #node[:authorization][:sudo][:users] << node[:jenkins][:server][:user]
 #node[:authorization][:sudo][:groups] << node[:jenkins][:server][:group]
 
-include_recipe "sudo"
+include_recipe "zzz_sudo"
 
 ruby_block "store jenkins ssh pubkey" do
   block do
