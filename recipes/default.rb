@@ -31,8 +31,8 @@ tmp = "/tmp"
 
 # add jenkins user to sudoers
 
-node.default.authorization.sudo.users << "ubuntu"
-node.default.authorization.sudo.groups << "sysadmin"
+#node.default.authorization.sudo.users << "ubuntu"
+#node.default.authorization.sudo.groups << "sysadmin"
 node.default.authorization.sudo.users << node[:jenkins][:server][:user]
 node.default.authorization.sudo.groups << node[:jenkins][:server][:group]
 #node[:authorization][:sudo][:users] << node[:jenkins][:server][:user]
