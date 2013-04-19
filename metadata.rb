@@ -1,4 +1,5 @@
- maintainer       "AJ Christensen"
+name	'zzz_jenkins'
+maintainer       "AJ Christensen"
 maintainer_email "aj@junglist.gen.nz"
 license          "Apache 2.0"
 description      "Installs and configures Jenkins CI server & slaves"
